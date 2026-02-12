@@ -3,6 +3,8 @@ import { Menu, X, Fish, Check, MapPin, Phone, Mail, ChevronRight, Calendar } fro
 import { Button } from './components/ui/button';
 import { Input } from './components/ui/input';
 import { Textarea } from './components/ui/textarea';
+import BookingWidget from './components/BookingWidget';
+import YandexMap from './components/YandexMap';
 
 export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -45,27 +47,27 @@ export default function App() {
 
   const galleryImages = [
     {
-      url: 'https://images.unsplash.com/photo-1648147870253-c45f6f430528?w=800',
+      url: '/photos/1.jpg',
       caption: 'Гостиная с панорамным видом'
     },
     {
-      url: 'https://images.unsplash.com/photo-1639751907353-3629fc00d2b2?w=800',
+      url: '/photos/2.jpg',
       caption: 'Уютная спальня'
     },
     {
-      url: 'https://images.unsplash.com/photo-1758861356142-546a3822ab1a?w=800',
+      url: '/photos/3.jpg',
       caption: 'Баня-бочка'
     },
     {
-      url: 'https://images.unsplash.com/photo-1748570570668-2148c2ec47ed?w=800',
+      url: '/photos/4.jpg',
       caption: 'Причал и лодки'
     },
     {
-      url: 'https://images.unsplash.com/photo-1658138617632-feb6a9538436?w=800',
+      url: '/photos/5.jpg',
       caption: 'Зона барбекю'
     },
     {
-      url: 'https://images.unsplash.com/photo-1760998805360-52ab052f0feb?w=800',
+      url: '/photos/6.jpg',
       caption: 'Закат на озере'
     }
   ];
@@ -79,7 +81,7 @@ export default function App() {
     <div className="min-h-screen bg-[#F8FAFB]">
       {/* Lightbox Modal */}
       {lightboxOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
           onClick={() => setLightboxOpen(false)}
         >
@@ -236,159 +238,9 @@ export default function App() {
               </p>
             </div>
 
-            {/* Stepper */}
-            <div className="flex items-center justify-center mb-12 md:mb-16 gap-2 md:gap-4 overflow-x-auto pb-4">
-              {[
-                { num: 1, label: 'Даты' },
-                { num: 2, label: 'Контакты' },
-                { num: 3, label: 'Подтверждение' }
-              ].map((step, idx) => (
-                <div key={idx} className="flex items-center">
-                  <div className="flex items-center gap-3 flex-shrink-0">
-                    <div className={`w-10 h-10 md:w-12 md:h-12 rounded-full flex items-center justify-center font-semibold transition-all ${
-                      bookingStep >= step.num 
-                        ? 'bg-[#1A9BAA] text-white shadow-lg shadow-[#1A9BAA]/30' 
-                        : 'bg-[#F1F5F9] text-[#64748B]'
-                    }`}>
-                      {step.num}
-                    </div>
-                    <span className={`font-medium hidden sm:inline ${
-                      bookingStep >= step.num ? 'text-[#0F1419]' : 'text-[#64748B]'
-                    }`}>
-                      {step.label}
-                    </span>
-                  </div>
-                  {idx < 2 && (
-                    <ChevronRight className="w-5 h-5 text-[#64748B] mx-2 md:mx-4 flex-shrink-0" />
-                  )}
-                </div>
-              ))}
-            </div>
-
-            {/* Booking Form */}
-            <div className="bg-white rounded-3xl shadow-xl border border-[#E2E8F0] overflow-hidden">
-              {bookingStep === 1 && (
-                <div className="grid md:grid-cols-2 gap-8 md:gap-12 p-8 md:p-12">
-                  {/* Calendar Placeholder */}
-                  <div className="space-y-6">
-                    <h3 className="text-2xl mb-6">Выберите даты</h3>
-                    <div className="bg-[#F8FAFB] rounded-2xl p-8 min-h-[320px] flex items-center justify-center border-2 border-dashed border-[#E2E8F0]">
-                      <div className="text-center text-[#64748B]">
-                        <Calendar className="w-12 h-12 mx-auto mb-4 opacity-40" />
-                        <p>Календарь бронирования</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Summary */}
-                  <div className="space-y-6">
-                    <h3 className="text-2xl mb-6">Детали бронирования</h3>
-                    <div className="bg-[#F8FAFB] rounded-2xl p-6 space-y-4">
-                      <div className="flex justify-between py-3 border-b border-[#E2E8F0]">
-                        <span className="text-[#64748B]">Заезд</span>
-                        <span className="font-semibold">Выберите дату</span>
-                      </div>
-                      <div className="flex justify-between py-3 border-b border-[#E2E8F0]">
-                        <span className="text-[#64748B]">Выезд</span>
-                        <span className="font-semibold">Выберите дату</span>
-                      </div>
-                      <div className="flex justify-between py-3 border-b border-[#E2E8F0]">
-                        <span className="text-[#64748B]">Ночей</span>
-                        <span className="font-semibold">—</span>
-                      </div>
-                      <div className="flex justify-between py-3 pt-6">
-                        <span className="text-xl">Итого</span>
-                        <span className="text-2xl font-bold text-[#1A9BAA]">— ₽</span>
-                      </div>
-                    </div>
-                    <Button 
-                      onClick={() => setBookingStep(2)}
-                      className="w-full bg-[#1A9BAA] hover:bg-[#168A97] text-white h-14 text-lg rounded-2xl shadow-lg shadow-[#1A9BAA]/20"
-                    >
-                      Далее
-                    </Button>
-                  </div>
-                </div>
-              )}
-
-              {bookingStep === 2 && (
-                <div className="p-8 md:p-12 max-w-2xl mx-auto">
-                  <h3 className="text-2xl md:text-3xl mb-8">Контактные данные</h3>
-                  <div className="space-y-6">
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Имя</label>
-                      <Input 
-                        className="h-14 rounded-2xl bg-[#F8FAFB] border-[#E2E8F0]" 
-                        placeholder="Ваше имя"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Телефон</label>
-                      <Input 
-                        type="tel"
-                        className="h-14 rounded-2xl bg-[#F8FAFB] border-[#E2E8F0]" 
-                        placeholder="+7 (___) ___-__-__"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Email</label>
-                      <Input 
-                        type="email"
-                        className="h-14 rounded-2xl bg-[#F8FAFB] border-[#E2E8F0]" 
-                        placeholder="example@mail.ru"
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm font-medium mb-2">Комментарий</label>
-                      <Textarea 
-                        className="min-h-32 rounded-2xl bg-[#F8FAFB] border-[#E2E8F0]" 
-                        placeholder="Дополнительные пожелания..."
-                      />
-                    </div>
-                    <div className="flex gap-4 pt-4">
-                      <Button
-                        variant="outline"
-                        onClick={() => setBookingStep(1)}
-                        className="flex-1 h-14 rounded-2xl border-2"
-                      >
-                        Назад
-                      </Button>
-                      <Button 
-                        onClick={() => setBookingStep(3)}
-                        className="flex-1 bg-[#1A9BAA] hover:bg-[#168A97] text-white h-14 rounded-2xl shadow-lg shadow-[#1A9BAA]/20"
-                      >
-                        Далее
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              )}
-
-              {bookingStep === 3 && (
-                <div className="p-8 md:p-12 max-w-2xl mx-auto text-center">
-                  <div className="w-20 h-20 bg-[#1A9BAA]/10 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <Check className="w-10 h-10 text-[#1A9BAA]" />
-                  </div>
-                  <h3 className="text-2xl md:text-3xl mb-4">Почти готово!</h3>
-                  <p className="text-[#64748B] text-lg mb-8 leading-relaxed">
-                    Проверьте данные и отправьте заявку. Мы свяжемся с вами в ближайшее время для подтверждения бронирования.
-                  </p>
-                  <div className="flex gap-4">
-                    <Button
-                      variant="outline"
-                      onClick={() => setBookingStep(2)}
-                      className="flex-1 h-14 rounded-2xl border-2"
-                    >
-                      Назад
-                    </Button>
-                    <Button 
-                      className="flex-1 bg-[#1A9BAA] hover:bg-[#168A97] text-white h-14 rounded-2xl shadow-lg shadow-[#1A9BAA]/20"
-                    >
-                      Отправить заявку
-                    </Button>
-                  </div>
-                </div>
-              )}
+            {/* Booking Form Replaced with Widget */}
+            <div className="max-w-4xl mx-auto">
+              <BookingWidget />
             </div>
           </div>
         </section>
@@ -463,11 +315,8 @@ export default function App() {
               </div>
 
               {/* Map Placeholder */}
-              <div className="bg-[#F8FAFB] rounded-3xl overflow-hidden h-[400px] md:h-auto min-h-[400px] border-2 border-dashed border-[#E2E8F0] flex items-center justify-center">
-                <div className="text-center text-[#64748B]">
-                  <MapPin className="w-12 h-12 mx-auto mb-4 opacity-40" />
-                  <p>Интерактивная карта</p>
-                </div>
+              <div className="bg-[#F8FAFB] rounded-3xl overflow-hidden h-[400px] md:h-auto min-h-[400px] border-2 border-dashed border-[#E2E8F0] shadow-md">
+                <YandexMap />
               </div>
             </div>
           </div>
