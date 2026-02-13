@@ -1,0 +1,259 @@
+{
+  "name": "VZZZ Telegram Bot",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "telegram-webhook",
+        "options": {}
+      },
+      "name": "Telegram Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        250,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json[\"message\"][\"text\"]}}",
+              "operation": "contains",
+              "value2": "/start"
+            },
+            {
+              "value1": "={{$json[\"message\"][\"text\"]}}",
+              "operation": "contains",
+              "value2": "Забронировать"
+            },
+            {
+              "value1": "={{$json[\"message\"][\"text\"]}}",
+              "operation": "contains",
+              "value2": "Отправить чек"
+            }
+          ]
+        }
+      },
+      "name": "Switch Command",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        500,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{$json[\"message\"][\"chat\"][\"id\"]}}",
+        "text": "👋 Добро пожаловать в FisherHouse!\n\nЯ помогу вам забронировать дом или принять оплату.\nВыберите действие ниже:",
+        "replyMarkup": "replyKeyboard",
+        "replyKeyboardOptions": {
+          "resize_keyboard": true,
+          "one_time_keyboard": false,
+          "keyboard": [
+            [
+              {
+                "text": "📅 Забронировать дом"
+              },
+              {
+                "text": "🧾 Отправить чек"
+              }
+            ],
+            [
+              {
+                "text": "📍 Как добраться"
+              },
+              {
+                "text": "📞 Связаться с администратором"
+              }
+            ]
+          ]
+        }
+      },
+      "name": "Send Welcome",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        750,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{$json[\"message\"][\"chat\"][\"id\"]}}",
+        "text": "Для бронирования перейдите на наш сайт и выберите удобные даты:",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboardOptions": {
+          "rows": [
+            [
+              {
+                "text": "Отрыть календарь",
+                "url": "https://vazuza-fisherhouse.ru/#booking"
+              }
+            ]
+          ]
+        }
+      },
+      "name": "Send Booking Link",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        750,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{$json[\"message\"][\"chat\"][\"id\"]}}",
+        "text": "Пожалуйста, отправьте фото чека или скриншот оплаты прямо в этот чат. Я передам его администратору."
+      },
+      "name": "Ask for Receipt",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        750,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{$json[\"message\"][\"photo\"] ? true : false}}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "name": "Check for Photo",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        500,
+        600
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "YOUR_ADMIN_CHAT_ID",
+        "text": "💰 Новый чек от клиента!",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "name": "Forward to Admin",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        750,
+        700
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{$node[\"Telegram Webhook\"].json[\"message\"][\"chat\"][\"id\"]}}",
+        "text": "Спасибо! Ваш чек получен и отправлен на проверку. Мы свяжемся с вами для подтверждения брони."
+      },
+      "name": "Confirm Receipt",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        950,
+        700
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{$json[\"message\"][\"chat\"][\"id\"]}}",
+        "text": "📍 Наш адрес:\nСмоленская область, Вазузское водохранилище, д. Хлепень.\n\nКоординаты: 55.96231, 34.46818",
+        "replyMarkup": "inlineKeyboard",
+        "inlineKeyboardOptions": {
+          "rows": [
+             [
+                {
+                   "text": "Открыть в Яндекс.Навигаторе",
+                   "url": "yandexnavi://build_route_on_map?lat_to=55.96231&lon_to=34.46818"
+                }
+             ]
+          ]
+        }
+      },
+      "name": "Send Location",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        750,
+        900
+      ]
+    }
+  ],
+  "connections": {
+    "Telegram Webhook": {
+      "main": [
+        [
+          {
+            "node": "Switch Command",
+            "type": "main",
+            "index": 0
+          },
+          {
+             "node": "Check for Photo",
+             "type": "main",
+             "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch Command": {
+      "main": [
+        [
+          {
+            "node": "Send Welcome",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send Booking Link",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Ask for Receipt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check for Photo": {
+      "main": [
+        [
+          {
+            "node": "Forward to Admin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Forward to Admin": {
+      "main": [
+        [
+          {
+            "node": "Confirm Receipt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

@@ -1,9 +1,9 @@
-
 import { useState, useEffect } from 'react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { ChevronLeft, ChevronRight, Check, CreditCard, QrCode } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const CONFIG = {
     APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwfZ9KFuYtW3ZnWB2yFVOAGtV6ygiVuaIs3IGBYSMj4Q90k0PUjrtbjBIJhcCUvnenW/exec',
@@ -33,6 +33,10 @@ export default function BookingWidget({ onBookingSuccess }: BookingWidgetProps) 
     const [guestCount, setGuestCount] = useState(2);
     const [guestComment, setGuestComment] = useState('');
     const [promoCode, setPromoCode] = useState('');
+
+    // Legal & Marketing
+    const [agreePersonalData, setAgreePersonalData] = useState(false);
+    const [agreeNewsletter, setAgreeNewsletter] = useState(false);
 
     // Payment State
     const [paymentMethod, setPaymentMethod] = useState<'sbp' | 'qr'>('sbp');
@@ -147,20 +151,18 @@ export default function BookingWidget({ onBookingSuccess }: BookingWidgetProps) 
         const newErrors: { [key: string]: string } = {};
 
         if (!guestName.trim()) newErrors.name = 'Введите имя';
-
-        // Basic validation, strict regex can be annoying
         if (!guestPhone.trim()) newErrors.phone = 'Введите телефон';
         else if (guestPhone.length < 10) newErrors.phone = 'Проверьте номер';
-
         if (!guestEmail.trim()) newErrors.email = 'Введите email';
         else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(guestEmail)) newErrors.email = 'Некорректный email';
+
+        if (!agreePersonalData) newErrors.agree = 'Необходимо согласие';
 
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     };
 
     const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        // Simple mask logic
         let val = e.target.value.replace(/\D/g, '');
         if (val.length > 11) val = val.substring(0, 11);
 
@@ -193,7 +195,8 @@ export default function BookingWidget({ onBookingSuccess }: BookingWidgetProps) 
             email: guestEmail,
             comment: guestComment,
             promoCode: promoCode,
-            paymentMethod: paymentMethod === 'sbp' ? 'СБП (номер)' : 'QR-код'
+            paymentMethod: paymentMethod === 'sbp' ? 'СБП (номер)' : 'QR-код',
+            newsletter: agreeNewsletter ? 'yes' : 'no'
         };
 
         try {
@@ -250,7 +253,6 @@ export default function BookingWidget({ onBookingSuccess }: BookingWidgetProps) 
                     ) : (
                         <div className="flex flex-col items-center">
                             <div className="bg-white p-3 border border-gray-200 rounded-2xl mb-4 shadow-sm">
-                                {/* Placeholder for QR Code */}
                                 <div className="w-48 h-48 bg-gray-100 flex items-center justify-center rounded-xl">
                                     <QrCode className="w-16 h-16 text-gray-300" />
                                 </div>
@@ -369,11 +371,14 @@ export default function BookingWidget({ onBookingSuccess }: BookingWidgetProps) 
 
                 {step === 2 && (
                     <div className="max-w-xl mx-auto space-y-6">
-                        <h3 className="text-2xl font-bold text-center mb-8">Контактные данные</h3>
+                        <div className="text-center mb-4">
+                            <h3 className="text-2xl font-bold mb-2">Контактные данные</h3>
+                            <p className="text-gray-500 text-sm">Заполните поля, чтобы мы могли связаться с вами</p>
+                        </div>
 
                         <div className="space-y-4">
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="col-span-2">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div className="md:col-span-2">
                                     <label className="block text-sm font-bold mb-1.5 text-gray-700">Имя и Фамилия <span className="text-red-500">*</span></label>
                                     <Input value={guestName} onChange={e => { setGuestName(e.target.value); if (errors.name) setErrors({ ...errors, name: '' }) }} placeholder="Иван Иванов" className={`h-12 bg-gray-50 ${errors.name ? 'border-red-300 ring-2 ring-red-100' : ''}`} />
                                     {errors.name && <p className="text-red-500 text-xs mt-1 font-medium">{errors.name}</p>}
@@ -395,12 +400,7 @@ export default function BookingWidget({ onBookingSuccess }: BookingWidgetProps) 
                                 {errors.email && <p className="text-red-500 text-xs mt-1 font-medium">{errors.email}</p>}
                             </div>
 
-                            <div>
-                                <label className="block text-sm font-bold mb-1.5 text-gray-700">Комментарий</label>
-                                <Textarea value={guestComment} onChange={e => setGuestComment(e.target.value)} className="min-h-[80px] bg-gray-50" placeholder="Пожелания..." />
-                            </div>
-
-                            <div className="grid grid-cols-2 gap-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-bold mb-1.5 text-gray-700">Промокод</label>
                                     <Input
@@ -432,14 +432,51 @@ export default function BookingWidget({ onBookingSuccess }: BookingWidgetProps) 
                                     </div>
                                 </div>
                             </div>
+
+                            {/* Checkboxes - Legal */}
+                            <div className="space-y-3 pt-2">
+                                <label className="flex items-start gap-3 cursor-pointer group">
+                                    <div className="relative flex items-center mt-1">
+                                        <input
+                                            type="checkbox"
+                                            checked={agreePersonalData}
+                                            onChange={(e) => {
+                                                setAgreePersonalData(e.target.checked);
+                                                if (e.target.checked && errors.agree) setErrors({ ...errors, agree: '' });
+                                            }}
+                                            className="peer h-5 w-5 cursor-pointer appearance-none rounded-md border border-gray-300 shadow-sm transition-all checked:border-[#1A9BAA] checked:bg-[#1A9BAA] hover:border-[#1A9BAA]"
+                                        />
+                                        <Check className="pointer-events-none absolute left-1/2 top-1/2 h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 peer-checked:opacity-100" />
+                                    </div>
+                                    <div className="text-sm text-gray-600 leading-snug">
+                                        Я даю согласие на обработку моих персональных данных и соглашаюсь с <Link to="/privacy" target="_blank" className="text-[#1A9BAA] underline hover:text-[#158896]">Политикой конфиденциальности</Link> и <Link to="/agreement" target="_blank" className="text-[#1A9BAA] underline hover:text-[#158896]">Офертой</Link> <span className="text-red-500">*</span>
+                                        {errors.agree && <p className="text-red-500 text-xs mt-1 font-medium">{errors.agree}</p>}
+                                    </div>
+                                </label>
+
+                                <label className="flex items-start gap-3 cursor-pointer group">
+                                    <div className="relative flex items-center mt-1">
+                                        <input
+                                            type="checkbox"
+                                            checked={agreeNewsletter}
+                                            onChange={(e) => setAgreeNewsletter(e.target.checked)}
+                                            className="peer h-5 w-5 cursor-pointer appearance-none rounded-md border border-gray-300 shadow-sm transition-all checked:border-[#1A9BAA] checked:bg-[#1A9BAA] hover:border-[#1A9BAA]"
+                                        />
+                                        <Check className="pointer-events-none absolute left-1/2 top-1/2 h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2 text-white opacity-0 peer-checked:opacity-100" />
+                                    </div>
+                                    <div className="text-sm text-gray-600 leading-snug">
+                                        Я хочу получать новости, спецпредложения и информацию об акциях
+                                    </div>
+                                </label>
+                            </div>
                         </div>
 
-                        <div className="flex gap-4 pt-4">
-                            <Button variant="outline" onClick={() => setStep(1)} className="flex-1 h-14 text-base rounded-xl font-bold text-gray-600 border-2 border-gray-100 hover:border-gray-200 bg-transparent hover:bg-gray-50">Назад</Button>
+                        <div className="flex flex-col md:flex-row gap-4 pt-4">
+                            <Button variant="outline" onClick={() => setStep(1)} className="order-2 md:order-1 flex-1 h-14 text-base rounded-xl font-bold text-gray-600 border-2 border-gray-100 hover:border-gray-200 bg-transparent hover:bg-gray-50">Назад</Button>
                             <Button
-                                className="flex-1 h-14 text-base rounded-xl bg-[#1A9BAA] hover:bg-[#158896] text-white shadow-lg shadow-[#1A9BAA]/20 transition-all hover:-translate-y-0.5"
+                                className={`order-1 md:order-2 flex-1 h-14 text-base rounded-xl bg-[#1A9BAA] hover:bg-[#158896] text-white shadow-lg shadow-[#1A9BAA]/20 transition-all ${loading || !agreePersonalData ? 'opacity-70 cursor-not-allowed' : 'hover:-translate-y-0.5'}`}
                                 onClick={sendRequest}
-                                disabled={loading}
+                                disabled={loading || !agreePersonalData}
                             >
                                 {loading ? (
                                     <div className="flex items-center gap-2">
