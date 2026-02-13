@@ -87,25 +87,29 @@ export default function LandingPage() {
             )}
 
             {/* Navigation */}
-            <nav className="fixed top-0 left-0 right-0 z-40 bg-[#0B2A3D]/80 backdrop-blur-md border-b border-white/5 transition-all duration-300">
+            {/* Navigation */}
+            <nav className="fixed top-0 left-0 right-0 z-40 bg-[#0B2A3D]/90 backdrop-blur-xl border-b border-white/10 transition-all duration-300 shadow-[0_0_20px_rgba(26,155,170,0.2)]">
                 <div className="max-w-[1240px] mx-auto px-5 md:px-20">
                     <div className="flex items-center justify-between h-20 md:h-24">
                         {/* Logo */}
-                        <a href="#" className="flex items-center gap-3 group">
-                            <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#1A9BAA] flex items-center justify-center group-hover:bg-[#158896] transition-colors shadow-lg shadow-[#1A9BAA]/20">
-                                <Fish className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                        <a href="#" className="flex items-center gap-4 group">
+                            <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-gradient-to-tr from-[#1A9BAA] to-[#2DD4BF] flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(26,155,170,0.6)]">
+                                <Fish className="w-6 h-6 md:w-7 md:h-7 text-white" />
                             </div>
-                            <span className="text-lg md:text-xl text-white font-semibold tracking-wide">Дом у воды</span>
+                            <div className="flex flex-col">
+                                <span className="text-xl md:text-2xl text-white font-bold tracking-wider uppercase drop-shadow-md">Дом у воды</span>
+                                <span className="text-xs text-[#2DD4BF] font-medium tracking-[0.2em] uppercase">Private Club</span>
+                            </div>
                         </a>
 
                         {/* Desktop Menu */}
                         <div className="hidden lg:flex items-center gap-8">
-                            <a href="#about" className="text-white/80 hover:text-white transition-colors text-sm font-medium tracking-wide uppercase">О доме</a>
-                            <a href="#gallery" className="text-white/80 hover:text-white transition-colors text-sm font-medium tracking-wide uppercase">Галерея</a>
-                            <a href="#booking" className="text-white/80 hover:text-white transition-colors text-sm font-medium tracking-wide uppercase">Бронирование</a>
-                            <a href="#directions" className="text-white/80 hover:text-white transition-colors text-sm font-medium tracking-wide uppercase">Как добраться</a>
+                            <a href="#about" className="text-white/80 hover:text-[#2DD4BF] hover:shadow-[0_0_10px_rgba(45,212,191,0.5)] transition-all text-sm font-bold tracking-widest uppercase px-2 py-1 rounded">О доме</a>
+                            <a href="#gallery" className="text-white/80 hover:text-[#2DD4BF] hover:shadow-[0_0_10px_rgba(45,212,191,0.5)] transition-all text-sm font-bold tracking-widest uppercase px-2 py-1 rounded">Галерея</a>
+                            <a href="#booking" className="text-white/80 hover:text-[#2DD4BF] hover:shadow-[0_0_10px_rgba(45,212,191,0.5)] transition-all text-sm font-bold tracking-widest uppercase px-2 py-1 rounded">Бронирование</a>
+                            <a href="#directions" className="text-white/80 hover:text-[#2DD4BF] hover:shadow-[0_0_10px_rgba(45,212,191,0.5)] transition-all text-sm font-bold tracking-widest uppercase px-2 py-1 rounded">Как добраться</a>
                             <a href="#booking">
-                                <Button className="bg-[#1A9BAA] hover:bg-[#168A97] text-white px-8 h-12 rounded-xl shadow-lg shadow-[#1A9BAA]/20 font-bold transition-all hover:-translate-y-0.5 active:translate-y-0">
+                                <Button className="bg-gradient-to-r from-[#1A9BAA] to-[#158896] hover:from-[#158896] hover:to-[#0F6F7A] text-white px-8 h-12 rounded-xl shadow-[0_0_20px_rgba(26,155,170,0.4)] hover:shadow-[0_0_30px_rgba(26,155,170,0.6)] font-bold transition-all hover:-translate-y-1 active:translate-y-0 border border-white/10">
                                     Забронировать
                                 </Button>
                             </a>
@@ -122,13 +126,13 @@ export default function LandingPage() {
 
                     {/* Mobile Menu */}
                     {mobileMenuOpen && (
-                        <div className="lg:hidden py-6 space-y-4 border-t border-white/10 animate-in slide-in-from-top-4 duration-200">
-                            <a href="#about" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-white transition-colors py-3 text-center text-lg font-medium">О доме</a>
-                            <a href="#gallery" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-white transition-colors py-3 text-center text-lg font-medium">Галерея</a>
-                            <a href="#booking" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-white transition-colors py-3 text-center text-lg font-medium">Бронирование</a>
-                            <a href="#directions" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-white transition-colors py-3 text-center text-lg font-medium">Как добраться</a>
+                        <div className="lg:hidden py-6 space-y-4 border-t border-white/10 animate-in slide-in-from-top-4 duration-200 bg-[#0B2A3D]">
+                            <a href="#about" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-[#2DD4BF] transition-colors py-3 text-center text-lg font-bold tracking-wider uppercase">О доме</a>
+                            <a href="#gallery" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-[#2DD4BF] transition-colors py-3 text-center text-lg font-bold tracking-wider uppercase">Галерея</a>
+                            <a href="#booking" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-[#2DD4BF] transition-colors py-3 text-center text-lg font-bold tracking-wider uppercase">Бронирование</a>
+                            <a href="#directions" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-[#2DD4BF] transition-colors py-3 text-center text-lg font-bold tracking-wider uppercase">Как добраться</a>
                             <a href="#booking" onClick={() => setMobileMenuOpen(false)}>
-                                <Button className="w-full bg-[#1A9BAA] hover:bg-[#168A97] text-white h-14 rounded-xl mt-4 text-lg font-bold shadow-lg shadow-[#1A9BAA]/20">
+                                <Button className="w-full bg-[#1A9BAA] hover:bg-[#168A97] text-white h-14 rounded-xl mt-4 text-lg font-bold shadow-[0_0_20px_rgba(26,155,170,0.4)]">
                                     Забронировать
                                 </Button>
                             </a>
@@ -145,42 +149,43 @@ export default function LandingPage() {
                         src="/photos/1.jpg" // Use local photo if available, or fallback
                         onError={(e) => e.currentTarget.src = "https://images.unsplash.com/photo-1760998805360-52ab052f0feb?w=1600"}
                         alt="Дом у воды"
-                        className="w-full h-full object-cover scale-105 animate-in fade-in duration-1000"
+                        className="w-full h-full object-cover scale-105 animate-in fade-in duration-[1500ms]"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-b from-[#0B2A3D]/70 via-[#0B2A3D]/40 to-[#0B2A3D]/90" />
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#0B2A3D]/40 via-[#0B2A3D]/20 to-[#0B2A3D]/90" />
+                    <div className="absolute inset-0 bg-black/20" /> {/* Extra darken for text contrast */}
                 </div>
 
                 {/* Content */}
                 <div className="relative z-10 max-w-[1240px] mx-auto px-5 md:px-20 py-20 md:py-32 w-full">
-                    <div className="max-w-4xl animate-in slide-in-from-bottom-8 duration-700 fade-in">
-                        <h1 className="text-4xl md:text-6xl lg:text-7xl text-white mb-6 md:mb-8 leading-tight font-bold tracking-tight drop-shadow-lg">
-                            Дом у воды <br />на Вазузском <span className="text-[#1A9BAA]">водохранилище</span>
+                    <div className="max-w-4xl animate-in slide-in-from-bottom-12 duration-1000 fade-in fill-mode-forwards">
+                        <h1 className="text-4xl md:text-6xl lg:text-7xl text-white mb-6 md:mb-8 leading-tight font-extrabold tracking-tight drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)]">
+                            Дом у воды <br />на Вазузском <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2DD4BF] to-[#1A9BAA] drop-shadow-[0_0_10px_rgba(45,212,191,0.5)]">водохранилище</span>
                         </h1>
-                        <p className="text-lg md:text-2xl text-white/90 mb-8 md:mb-12 leading-relaxed max-w-2xl font-light">
-                            Премиум отдых для рыбаков и охотников в 220 км от Москвы. Тишина, природа и комфорт 5*.
+                        <p className="text-lg md:text-2xl text-white/95 mb-8 md:mb-12 leading-relaxed max-w-2xl font-medium drop-shadow-md">
+                            Премиум отдых для рыбаков и охотников в 220 км от Москвы. Тишина, природа и комфорт.
                         </p>
 
                         {/* Feature Chips */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4 mb-10 md:mb-14">
                             {['130 м² комфорта', 'Прямой выход к воде', 'Баня-бочка', 'До 8 гостей'].map((feature, idx) => (
-                                <div key={idx} className="flex items-center gap-3 bg-white/10 backdrop-blur-md rounded-2xl px-5 py-4 border border-white/20 hover:bg-white/20 transition-colors">
-                                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#1A9BAA] flex items-center justify-center shadow-lg shadow-[#1A9BAA]/30">
+                                <div key={idx} className="flex items-center gap-3 bg-white/5 backdrop-blur-lg rounded-2xl px-5 py-4 border border-white/20 hover:bg-white/10 transition-all hover:scale-105 hover:shadow-[0_0_15px_rgba(255,255,255,0.1)] duration-300 group">
+                                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-[#1A9BAA] flex items-center justify-center shadow-[0_0_10px_rgba(26,155,170,0.5)] group-hover:bg-[#2DD4BF] transition-colors">
                                         <Check className="w-5 h-5 text-white" />
                                     </div>
-                                    <span className="text-white font-medium text-lg">{feature}</span>
+                                    <span className="text-white font-bold text-lg drop-shadow-sm">{feature}</span>
                                 </div>
                             ))}
                         </div>
 
                         {/* CTA Buttons */}
-                        <div className="flex flex-col sm:flex-row gap-4">
+                        <div className="flex flex-col sm:flex-row gap-5">
                             <a href="#booking">
-                                <Button className="w-full sm:w-auto bg-[#1A9BAA] hover:bg-[#168A97] text-white px-10 h-16 text-xl rounded-2xl shadow-xl shadow-[#1A9BAA]/30 font-bold transition-all hover:scale-105 active:scale-100">
+                                <Button className="w-full sm:w-auto bg-gradient-to-r from-[#1A9BAA] to-[#158896] hover:from-[#2DD4BF] hover:to-[#1A9BAA] text-white px-10 h-16 text-xl rounded-2xl shadow-[0_0_20px_rgba(26,155,170,0.4)] hover:shadow-[0_0_40px_rgba(26,155,170,0.6)] font-bold transition-all hover:-translate-y-1 hover:scale-105 active:scale-95 border border-white/10">
                                     Забронировать
                                 </Button>
                             </a>
                             <a href="#gallery">
-                                <Button variant="outline" className="w-full sm:w-auto border-2 border-white/30 text-white hover:bg-white/10 px-10 h-16 text-xl rounded-2xl backdrop-blur-md font-semibold transition-all hover:border-white">
+                                <Button className="w-full sm:w-auto bg-[#0B2A3D]/80 hover:bg-[#0B2A3D] text-white px-10 h-16 text-xl rounded-2xl backdrop-blur-md font-bold transition-all hover:-translate-y-1 hover:scale-105 hover:shadow-[0_0_20px_rgba(255,255,255,0.2)] border border-white/20 hover:border-[#2DD4BF]/50">
                                     Смотреть фото
                                 </Button>
                             </a>
@@ -207,13 +212,16 @@ export default function LandingPage() {
                         {features.map((feature, idx) => (
                             <div
                                 key={idx}
-                                className="group bg-white rounded-[2rem] p-8 md:p-10 shadow-lg hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border border-[#E2E8F0] relative overflow-hidden"
+                                className="group bg-white rounded-[2rem] p-8 md:p-10 shadow-lg hover:shadow-[0_20px_40px_rgba(26,155,170,0.15)] transition-all duration-500 hover:-translate-y-3 border border-[#E2E8F0] relative overflow-hidden"
                             >
-                                <div className="absolute top-0 right-0 w-32 h-32 bg-[#1A9BAA]/5 rounded-bl-[100px] -mr-10 -mt-10 transition-transform group-hover:scale-150 duration-700" />
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-[#1A9BAA]/5 rounded-bl-[100px] -mr-10 -mt-10 transition-transform group-hover:scale-[1.7] duration-700 ease-out" />
 
-                                <div className="text-6xl mb-8 relative z-10 drop-shadow-sm transform group-hover:scale-110 transition-transform duration-300">{feature.icon}</div>
-                                <h3 className="text-2xl font-bold mb-4 text-[#0B2A3D] relative z-10">{feature.title}</h3>
-                                <p className="text-[#64748B] leading-relaxed relative z-10 text-lg">{feature.description}</p>
+                                <div className="flex items-center gap-4 mb-6 relative z-10">
+                                    <div className="text-5xl drop-shadow-sm transform group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">{feature.icon}</div>
+                                    <h3 className="text-2xl font-bold text-[#0B2A3D] leading-tight group-hover:text-[#1A9BAA] transition-colors">{feature.title}</h3>
+                                </div>
+
+                                <p className="text-[#64748B] leading-relaxed relative z-10 text-lg font-medium">{feature.description}</p>
                             </div>
                         ))}
                     </div>

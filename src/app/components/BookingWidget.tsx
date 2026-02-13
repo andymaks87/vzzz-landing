@@ -100,6 +100,24 @@ export default function BookingWidget({ onBookingSuccess }: BookingWidgetProps) 
     };
 
 
+    const calculateTotal = () => {
+        if (!checkIn || !checkOut) return 0;
+        let total = 0;
+        // Clone checkIn to avoid mutating state
+        const current = new Date(checkIn);
+        while (current < checkOut) {
+            const day = current.getDay();
+            // Friday (5) and Saturday (6) counts as weekend rate
+            if (day === 5 || day === 6) {
+                total += 10000;
+            } else {
+                total += 7500;
+            }
+            current.setDate(current.getDate() + 1);
+        }
+        return total;
+    };
+
     const renderCalendar = () => {
         const year = currentDate.getFullYear();
         const month = currentDate.getMonth();
@@ -146,6 +164,16 @@ export default function BookingWidget({ onBookingSuccess }: BookingWidgetProps) 
         }
         return days;
     };
+
+    // ... validateForm ... 
+
+    // START OF REPLACEMENT FOR SUMMARY SECTION (Step 1) to include TOTAL PRICE
+    // Use view tool logic to find exact location, but since I'm in multi-replace I'll target the Summary block specifically if I can.
+    // Actually, I should just replace the helper function first, and then the JSX separately? 
+    // Wait, the tool instructions say "For each ReplacementChunk...". I can do multiple.
+
+    // Let's replace the whole Summary block in Step 1.
+
 
     const validateForm = () => {
         const newErrors: { [key: string]: string } = {};
@@ -242,12 +270,12 @@ export default function BookingWidget({ onBookingSuccess }: BookingWidgetProps) 
                                 </div>
                                 <div>
                                     <p className="text-sm text-gray-400 font-medium">Номер телефона (СБП)</p>
-                                    <p className="font-bold text-xl text-gray-900 tracking-wide">+7 (999) 000-00-00</p>
+                                    <p className="font-bold text-xl text-gray-900 tracking-wide">8 (995) 308-95-80</p>
+                                    <p className="text-xs text-gray-500 mt-1">ОТП Банк</p>
                                 </div>
                             </div>
                             <div className="text-center text-sm text-gray-500">
-                                Получатель: <span className="font-semibold text-gray-700">Иван Иванович И.</span>
-                                <br />(Сбер, Тинькофф, Альфа)
+                                Получатель: <span className="font-semibold text-gray-700">Иван И.</span>
                             </div>
                         </div>
                     ) : (
@@ -339,8 +367,14 @@ export default function BookingWidget({ onBookingSuccess }: BookingWidgetProps) 
                                     </div>
                                     <div className="flex justify-between pt-4 border-t border-gray-200">
                                         <span className="text-gray-900 font-bold">Итого дней</span>
-                                        <span className="text-[#1A9BAA] font-bold">
+                                        <span className="text-gray-900 font-semibold">
                                             {checkIn && checkOut ? Math.ceil((checkOut.getTime() - checkIn.getTime()) / (1000 * 60 * 60 * 24)) : 0}
+                                        </span>
+                                    </div>
+                                    <div className="flex justify-between pt-2">
+                                        <span className="text-[#1A9BAA] font-bold text-lg">К оплате</span>
+                                        <span className="text-[#1A9BAA] font-bold text-lg">
+                                            {checkIn && checkOut ? calculateTotal().toLocaleString() : 0} ₽
                                         </span>
                                     </div>
                                 </div>
