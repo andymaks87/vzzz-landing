@@ -113,14 +113,8 @@ export default function LandingPage() {
                             <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-gradient-to-tr from-[#1A9BAA] to-[#2DD4BF] flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(26,155,170,0.6)]">
                                 <Fish className="w-6 h-6 md:w-7 md:h-7 text-white" />
                             </div>
-                            <div className="flex flex-col">
-                                <span className="text-xl md:text-2xl text-white font-bold tracking-wider uppercase drop-shadow-md">Дом у воды</span>
-                                {/* Wave graphic instead of text */}
-                                <div className="flex space-x-1 mt-1.5 opacity-80">
-                                    <div className="w-6 h-1 bg-[#2DD4BF] rounded-full animate-pulse" />
-                                    <div className="w-4 h-1 bg-[#1A9BAA] rounded-full animate-pulse delay-75" />
-                                    <div className="w-2 h-1 bg-white rounded-full animate-pulse delay-150" />
-                                </div>
+                            <div className="flex flex-col md:flex-row md:items-center md:gap-3">
+                                <span className="text-xl md:text-2xl text-white font-bold tracking-wider uppercase drop-shadow-md whitespace-nowrap">Дом у воды</span>
                             </div>
                         </a>
 
@@ -181,10 +175,10 @@ export default function LandingPage() {
                 <div className="relative z-10 max-w-[1240px] mx-auto px-5 md:px-20 py-20 md:py-32 w-full">
                     <div className="max-w-4xl animate-in slide-in-from-bottom-12 duration-1000 fade-in fill-mode-forwards">
                         <h1 className="text-3xl md:text-5xl lg:text-7xl text-white mb-6 md:mb-8 leading-tight font-extrabold tracking-tight drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)]">
-                            220 км от МКАД по Новорижскому шоссе (М-9) <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2DD4BF] to-[#1A9BAA] drop-shadow-[0_0_10px_rgba(45,212,191,0.5)]">Тишина, природа и комфорт</span>
+                            Мгновенное бронирование <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2DD4BF] to-[#1A9BAA] drop-shadow-[0_0_10px_rgba(45,212,191,0.5)]">Дом у воды</span>
                         </h1>
                         <p className="text-lg md:text-2xl text-white/95 mb-8 md:mb-12 leading-relaxed max-w-2xl font-medium drop-shadow-md">
-                            Премиум отдых для рыбаков и охотников. Дом у воды на Вазузском водохранилище.
+                            220 км от МКАД по Новорижскому шоссе. Тишина, природа и комфорт.
                         </p>
 
                         {/* Feature Chips - Monochrome Icons */}
@@ -203,7 +197,7 @@ export default function LandingPage() {
                         <div className="flex flex-col sm:flex-row gap-5">
                             <a href="#booking">
                                 <Button className="w-full sm:w-auto bg-gradient-to-r from-[#1A9BAA] to-[#158896] hover:from-[#2DD4BF] hover:to-[#1A9BAA] text-white px-10 h-16 text-xl rounded-2xl shadow-[0_0_20px_rgba(26,155,170,0.4)] hover:shadow-[0_0_40px_rgba(26,155,170,0.6)] font-bold transition-all hover:-translate-y-1 hover:scale-105 active:scale-95 border border-white/10">
-                                    Мгновенное бронирование
+                                    Забронировать
                                 </Button>
                             </a>
                             <a href="#gallery">
@@ -338,7 +332,7 @@ export default function LandingPage() {
                             <div className="grid gap-4">
                                 <div className="flex gap-2">
                                     <Button
-                                        className="flex-1 justify-center bg-[#1A9BAA] hover:bg-[#168A97] text-white h-14 md:h-16 rounded-2xl shadow-lg shadow-[#1A9BAA]/20 text-base md:text-lg font-bold"
+                                        className="flex-1 justify-center bg-[#1A9BAA] hover:bg-[#168A97] text-white h-14 md:h-16 rounded-2xl shadow-lg shadow-[#1A9BAA]/20 text-base md:text-lg font-bold whitespace-nowrap"
                                         onClick={() => {
                                             navigator.clipboard.writeText("Смоленская область, деревня Хлепень, ул. Набережная");
                                             alert("Адрес скопирован!");
