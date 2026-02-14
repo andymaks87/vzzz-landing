@@ -1,0 +1,306 @@
+{
+    "name": "Vazuza Booking Bot v3 (Fixed Routing)",
+    "nodes": [
+        {
+            "parameters": {
+                "updates": [
+                    "message"
+                ],
+                "additionalFields": {}
+            },
+            "name": "Telegram Trigger",
+            "type": "n8n-nodes-base.telegramTrigger",
+            "typeVersion": 1,
+            "position": [
+                250,
+                300
+            ],
+            "credentials": {
+                "telegramApi": {
+                    "id": "YOUR_CREDENTIAL_ID",
+                    "name": "Telegram account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "dataType": "string",
+                "value1": "={{$json[\"message\"][\"text\"]}}",
+                "rules": {
+                    "rules": [
+                        {
+                            "value2": "/start",
+                            "operation": "contains"
+                        },
+                        {
+                            "value2": "Забронировать",
+                            "operation": "contains"
+                        },
+                        {
+                            "value2": "Отправить чек",
+                            "operation": "contains"
+                        }
+                    ]
+                },
+                "fallbackSettings": {}
+            },
+            "name": "Router",
+            "type": "n8n-nodes-base.switch",
+            "typeVersion": 1,
+            "position": [
+                500,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "chatId": "={{$node[\"Telegram Trigger\"].json[\"message\"][\"chat\"][\"id\"]}}",
+                "text": "👋 Добро пожаловать в FisherHouse!\n\nЯ помогу вам забронировать дом или принять оплату.\nВыберите действие ниже:",
+                "replyMarkup": "replyKeyboard",
+                "replyKeyboardOptions": {
+                    "resize_keyboard": true,
+                    "one_time_keyboard": false,
+                    "keyboard": [
+                        [
+                            {
+                                "text": "📅 Забронировать дом"
+                            },
+                            {
+                                "text": "🧾 Отправить чек"
+                            }
+                        ],
+                        [
+                            {
+                                "text": "📍 Как добраться"
+                            },
+                            {
+                                "text": "📞 Связаться с администратором"
+                            }
+                        ]
+                    ]
+                }
+            },
+            "name": "Send Welcome",
+            "type": "n8n-nodes-base.telegram",
+            "typeVersion": 1,
+            "position": [
+                800,
+                100
+            ],
+            "credentials": {
+                "telegramApi": {
+                    "id": "YOUR_CREDENTIAL_ID",
+                    "name": "Telegram account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "chatId": "={{$node[\"Telegram Trigger\"].json[\"message\"][\"chat\"][\"id\"]}}",
+                "text": "Для бронирования перейдите на наш сайт и выберите удобные даты:",
+                "replyMarkup": "inlineKeyboard",
+                "inlineKeyboardOptions": {
+                    "rows": [
+                        [
+                            {
+                                "text": "📅 Открыть календарь",
+                                "url": "https://vazuza-fisherhouse.ru/#booking"
+                            }
+                        ]
+                    ]
+                }
+            },
+            "name": "Send Booking Link",
+            "type": "n8n-nodes-base.telegram",
+            "typeVersion": 1,
+            "position": [
+                800,
+                300
+            ],
+            "credentials": {
+                "telegramApi": {
+                    "id": "YOUR_CREDENTIAL_ID",
+                    "name": "Telegram account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "chatId": "={{$node[\"Telegram Trigger\"].json[\"message\"][\"chat\"][\"id\"]}}",
+                "text": "Пожалуйста, отправьте фото чека или скриншот оплаты прямо в этот чат. Я передам его администратору."
+            },
+            "name": "Ask for Receipt",
+            "type": "n8n-nodes-base.telegram",
+            "typeVersion": 1,
+            "position": [
+                800,
+                500
+            ],
+            "credentials": {
+                "telegramApi": {
+                    "id": "YOUR_CREDENTIAL_ID",
+                    "name": "Telegram account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "boolean": [
+                        {
+                            "value1": "={{$node[\"Telegram Trigger\"].json[\"message\"][\"photo\"] ? true : false}}",
+                            "value2": true
+                        }
+                    ]
+                }
+            },
+            "name": "Check for Photo",
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 1,
+            "position": [
+                500,
+                600
+            ]
+        },
+        {
+            "parameters": {
+                "chatId": "YOUR_GROUP_CHAT_ID",
+                "text": "💰 *Новый платеж от клиента!*\n\nИмя: {{$node[\"Telegram Trigger\"].json[\"message\"][\"from\"][\"first_name\"]}} {{$node[\"Telegram Trigger\"].json[\"message\"][\"from\"][\"last_name\"]}}\nUsername: @{{$node[\"Telegram Trigger\"].json[\"message\"][\"from\"][\"username\"]}}",
+                "additionalFields": {
+                    "parse_mode": "Markdown",
+                    "appendAttribution": false
+                }
+            },
+            "name": "Forward to Group",
+            "type": "n8n-nodes-base.telegram",
+            "typeVersion": 1,
+            "position": [
+                800,
+                700
+            ],
+            "credentials": {
+                "telegramApi": {
+                    "id": "YOUR_CREDENTIAL_ID",
+                    "name": "Telegram account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "chatId": "YOUR_GROUP_CHAT_ID",
+                "file": "={{$node[\"Telegram Trigger\"].json[\"message\"][\"photo\"].pop()[\"file_id\"]}}",
+                "additionalFields": {
+                    "caption": "Скриншот оплаты"
+                }
+            },
+            "name": "Forward Photo",
+            "type": "n8n-nodes-base.telegram",
+            "typeVersion": 1,
+            "position": [
+                1000,
+                700
+            ],
+            "credentials": {
+                "telegramApi": {
+                    "id": "YOUR_CREDENTIAL_ID",
+                    "name": "Telegram account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "chatId": "={{$node[\"Telegram Trigger\"].json[\"message\"][\"chat\"][\"id\"]}}",
+                "text": "✅ Спасибо! Чек получен и отправлен администратору. Мы свяжемся с вами для подтверждения брони."
+            },
+            "name": "Confirm Receipt Client",
+            "type": "n8n-nodes-base.telegram",
+            "typeVersion": 1,
+            "position": [
+                1200,
+                700
+            ],
+            "credentials": {
+                "telegramApi": {
+                    "id": "YOUR_CREDENTIAL_ID",
+                    "name": "Telegram account"
+                }
+            }
+        }
+    ],
+    "connections": {
+        "Telegram Trigger": {
+            "main": [
+                [
+                    {
+                        "node": "Router",
+                        "type": "main",
+                        "index": 0
+                    },
+                    {
+                        "node": "Check for Photo",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Router": {
+            "main": [
+                [
+                    {
+                        "node": "Send Welcome",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Send Booking Link",
+                        "type": "main",
+                        "index": 0
+                    }
+                ],
+                [
+                    {
+                        "node": "Ask for Receipt",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Check for Photo": {
+            "main": [
+                [
+                    {
+                        "node": "Forward to Group",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Forward to Group": {
+            "main": [
+                [
+                    {
+                        "node": "Forward Photo",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Forward Photo": {
+            "main": [
+                [
+                    {
+                        "node": "Confirm Receipt Client",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    }
+}

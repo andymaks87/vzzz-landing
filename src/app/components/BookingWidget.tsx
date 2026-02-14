@@ -25,6 +25,7 @@ export default function BookingWidget({ onBookingSuccess }: BookingWidgetProps) 
     const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
     const [success, setSuccess] = useState(false);
+    const [selectionMode, setSelectionMode] = useState<'booking' | 'waitlist'>('booking');
 
     // Form State
     const [guestName, setGuestName] = useState('');
@@ -69,7 +70,7 @@ export default function BookingWidget({ onBookingSuccess }: BookingWidgetProps) 
     const handleDateClick = (date: Date) => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
-        if (date < today || isDateBooked(date)) return;
+        if (date < today || (selectionMode === 'booking' && isDateBooked(date))) return;
 
         if (!checkIn || (checkIn && checkOut)) {
             setCheckIn(date);
@@ -83,7 +84,7 @@ export default function BookingWidget({ onBookingSuccess }: BookingWidgetProps) 
                 let fail = false;
                 const temp = new Date(checkIn);
                 while (temp <= date) {
-                    if (isDateBooked(temp)) {
+                    if (selectionMode === 'booking' && isDateBooked(temp)) {
                         fail = true;
                         break;
                     }
@@ -109,9 +110,9 @@ export default function BookingWidget({ onBookingSuccess }: BookingWidgetProps) 
             const day = current.getDay();
             // Friday (5) and Saturday (6) counts as weekend rate
             if (day === 5 || day === 6) {
-                total += 10000;
+                total += 15; // Test rate: Weekend
             } else {
-                total += 7500;
+                total += 10; // Test rate: Weekday
             }
             current.setDate(current.getDate() + 1);
         }
@@ -152,10 +153,12 @@ export default function BookingWidget({ onBookingSuccess }: BookingWidgetProps) 
             days.push(
                 <div
                     key={d}
-                    onClick={() => !isDisabled && !isBooked && handleDateClick(date)}
+                    onClick={() => !isDisabled && (selectionMode === 'waitlist' || !isBooked) && handleDateClick(date)}
                     className={`
                     p-2 text-center rounded-lg cursor-pointer transition-all text-sm font-medium border border-transparent
                     ${statusClass}
+                    ${isSelected && selectionMode === 'waitlist' ? '!bg-orange-500 !text-white' : ''}
+                    ${isInRange && selectionMode === 'waitlist' ? '!bg-orange-100 !text-orange-600' : ''}
                 `}
                 >
                     {d}
@@ -221,7 +224,8 @@ export default function BookingWidget({ onBookingSuccess }: BookingWidgetProps) 
             name: guestName,
             phone: guestPhone,
             email: guestEmail,
-            comment: guestComment,
+
+            comment: selectionMode === 'waitlist' ? `[WAITLIST] ${guestComment}` : guestComment,
             promoCode: promoCode,
             paymentMethod: paymentMethod === 'sbp' ? 'СБП (номер)' : 'QR-код',
             newsletter: agreeNewsletter ? 'yes' : 'no'
@@ -275,7 +279,7 @@ export default function BookingWidget({ onBookingSuccess }: BookingWidgetProps) 
                                 </div>
                             </div>
                             <div className="text-center text-sm text-gray-500">
-                                Получатель: <span className="font-semibold text-gray-700">Иван И.</span>
+                                Получатель: <span className="font-semibold text-gray-700">Емельянов Евгений Юрьевич</span>
                             </div>
                         </div>
                     ) : (
@@ -295,7 +299,7 @@ export default function BookingWidget({ onBookingSuccess }: BookingWidgetProps) 
                         <p className="text-sm text-gray-500 mb-3 text-center">
                             После оплаты отправьте чек (скриншот):
                         </p>
-                        <a href="https://t.me/fisherhouse_admin" target="_blank" rel="noopener noreferrer"
+                        <a href="https://t.me/VazuzaFisherHouse_bot" target="_blank" rel="noopener noreferrer"
                             className="flex items-center justify-center gap-2 bg-[#1A9BAA] text-white py-3 px-4 rounded-xl font-bold hover:bg-[#158896] transition-colors shadow-lg shadow-[#1A9BAA]/20">
                             <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.48-1.08-1.48-1.08-.87-.64.06-1 .55-1.55.33-.36 1.76-1.68 1.76-1.68.08-.08.13-.24-.04-.26-.18-.02-1.2.74-2.4 1.58-1.88 1.32-3.08 1.15-3.08 1.15-.84-.13-1.85-.38-2.65-.63-.98-.3-1.74-.63-1.74-.63.63-.3 8.3-3.23 11-4.28 2.3-.9 2.58-.93 2.9-.93.07 0 .23.02.32.09.08.07.13.17.13.27v.06z" /></svg>
                             Отправить чек в Telegram
@@ -379,26 +383,39 @@ export default function BookingWidget({ onBookingSuccess }: BookingWidgetProps) 
                                     </div>
                                 </div>
 
-                                <div className="mt-6 bg-blue-50/50 p-4 rounded-xl border border-blue-100 text-sm text-blue-800">
-                                    <p className="font-bold mb-1">Цены за сутки:</p>
-                                    <div className="flex justify-between mt-2">
-                                        <span>Будни</span>
-                                        <span className="font-semibold">7 500 ₽</span>
+                                {checkIn && checkOut && (
+                                    <div className="mt-6 bg-blue-50/50 p-4 rounded-xl border border-blue-100 text-sm text-blue-800 animate-in fade-in">
+                                        <p className="font-bold mb-1">Расчет стоимости:</p>
+                                        <div className="flex justify-between mt-2">
+                                            <span>Тариф</span>
+                                            <span className="font-semibold">Тестовый режим</span>
+                                        </div>
                                     </div>
-                                    <div className="flex justify-between mt-1">
-                                        <span>Выходные</span>
-                                        <span className="font-semibold">10 000 ₽</span>
-                                    </div>
-                                </div>
+                                )}
                             </div>
 
                             <Button
-                                className="w-full h-14 text-lg bg-[#1A9BAA] hover:bg-[#158896] text-white rounded-xl mt-6 shadow-lg shadow-[#1A9BAA]/20"
+                                className={`w-full h-14 text-lg text-white rounded-xl mt-6 shadow-lg transition-all
+                                    ${selectionMode === 'waitlist' ? 'bg-orange-500 hover:bg-orange-600 shadow-orange-500/20' : 'bg-[#1A9BAA] hover:bg-[#158896] shadow-[#1A9BAA]/20'}
+                                `}
                                 disabled={!checkIn || !checkOut}
                                 onClick={() => setStep(2)}
                             >
-                                Далее
+                                {selectionMode === 'waitlist' ? 'Оставить заявку' : 'Далее'}
                             </Button>
+
+                            <div className="mt-4 text-center">
+                                <button
+                                    onClick={() => {
+                                        setSelectionMode(prev => prev === 'booking' ? 'waitlist' : 'booking');
+                                        setCheckIn(null);
+                                        setCheckOut(null);
+                                    }}
+                                    className={`text-sm font-medium underline decoration-dashed underline-offset-4 transition-colors ${selectionMode === 'waitlist' ? 'text-orange-600' : 'text-gray-400 hover:text-[#1A9BAA]'}`}
+                                >
+                                    {selectionMode === 'waitlist' ? 'Вернуться к бронированию' : 'Нужных дат нет? Встать в лист ожидания'}
+                                </button>
+                            </div>
                         </div>
                     </div>
                 )}
