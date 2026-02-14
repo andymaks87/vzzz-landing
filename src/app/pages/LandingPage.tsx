@@ -4,6 +4,7 @@ import { Button } from '../components/ui/button';
 import BookingWidget from '../components/BookingWidget';
 import YandexMap from '../components/YandexMap';
 import { Link } from 'react-router-dom';
+import { APPS_SCRIPT_URL } from '../../config';
 
 export default function LandingPage() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -59,8 +60,6 @@ export default function LandingPage() {
     ]);
 
 
-
-    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwfZ9KFuYtW3ZnWB2yFVOAGtV6ygiVuaIs3IGBYSMj4Q90k0PUjrtbjBIJhcCUvnenW/exec';
 
     useEffect(() => {
         const fetchGallery = async () => {

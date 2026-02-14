@@ -4,10 +4,11 @@ import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { ChevronLeft, ChevronRight, Check, CreditCard, QrCode } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import Stepper from './Stepper';
 
-const CONFIG = {
-    APPS_SCRIPT_URL: 'https://script.google.com/macros/s/AKfycbwfZ9KFuYtW3ZnWB2yFVOAGtV6ygiVuaIs3IGBYSMj4Q90k0PUjrtbjBIJhcCUvnenW/exec',
-};
+import { APPS_SCRIPT_URL } from '../../config';
+
+// Removed local CONFIG object in favor of centralized config.ts
 
 const WEEKDAYS = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 const MONTHS = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
@@ -47,7 +48,7 @@ export default function BookingWidget({ onBookingSuccess }: BookingWidgetProps) 
     useEffect(() => {
         const loadDates = async () => {
             try {
-                const res = await fetch(`${CONFIG.APPS_SCRIPT_URL}?action=getBookedDates`);
+                const res = await fetch(`${APPS_SCRIPT_URL}?action=getBookedDates`);
                 const data = await res.json();
                 if (data?.booked) setBookedDates(data.booked.map((d: string) => new Date(d)));
                 if (data?.paid) setPaidDates(data.paid.map((d: string) => new Date(d)));
@@ -224,7 +225,6 @@ export default function BookingWidget({ onBookingSuccess }: BookingWidgetProps) 
             name: guestName,
             phone: guestPhone,
             email: guestEmail,
-
             comment: selectionMode === 'waitlist' ? `[WAITLIST] ${guestComment}` : guestComment,
             promoCode: promoCode,
             paymentMethod: paymentMethod === 'sbp' ? 'СБП (номер)' : 'QR-код',
@@ -232,13 +232,16 @@ export default function BookingWidget({ onBookingSuccess }: BookingWidgetProps) 
         };
 
         try {
-            const formData = new FormData();
-            Object.entries(payload).forEach(([key, value]) => formData.append(key, String(value)));
+            // Using URLSearchParams forces 'application/x-www-form-urlencoded'
+            // This works reliably with Google Apps Script doPost(e) and avoids some preflight issues
+            const params = new URLSearchParams();
+            Object.entries(payload).forEach(([key, value]) => params.append(key, String(value)));
 
-            await fetch(CONFIG.APPS_SCRIPT_URL, {
+            await fetch(APPS_SCRIPT_URL, {
                 method: 'POST',
-                body: formData,
-                mode: 'no-cors'
+                body: params
+                // Remove 'no-cors' to see real errors. 
+                // Note: If you get CORS errors, check that the script is deployed as "Anyone"
             });
 
             setSuccess(true);
@@ -317,15 +320,12 @@ export default function BookingWidget({ onBookingSuccess }: BookingWidgetProps) 
     return (
         <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
             {/* Header Steps */}
-            <div className="flex border-b border-gray-100 bg-gray-50/50">
-                {[1, 2, 3].map((s) => (
-                    <div key={s} className={`flex-1 py-4 text-center text-sm font-semibold transition-colors
-                    ${step >= s ? 'text-[#1A9BAA]' : 'text-gray-400'}
-                    ${step === s ? 'bg-white shadow-sm ring-1 ring-black/5 z-10' : ''}
-                `}>
-                        Шаг {s}
-                    </div>
-                ))}
+            <div className="pt-8 pb-4 px-6 md:px-12 border-b border-gray-100 bg-gray-50/30">
+                <Stepper
+                    steps={['Даты', 'Детали', 'Оплата']}
+                    currentStep={step}
+                    onStepClick={(s) => setStep(s)}
+                />
             </div>
 
             <div className="p-6 md:p-10">
