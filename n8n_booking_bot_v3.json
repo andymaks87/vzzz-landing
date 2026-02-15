@@ -164,7 +164,36 @@
         },
         {
             "parameters": {
-                "chatId": "YOUR_GROUP_CHAT_ID",
+                "authentication": "serviceAccount",
+                "documentId": {
+                    "__rl": true,
+                    "value": "={{$env[\"GOOGLE_SHEETS_SHEET_ID\"]}}",
+                    "mode": "id"
+                },
+                "sheetName": {
+                    "__rl": true,
+                    "value": "Sheet1",
+                    "mode": "name"
+                },
+                "options": {}
+            },
+            "name": "Log to Sheets",
+            "type": "n8n-nodes-base.googleSheets",
+            "typeVersion": 3,
+            "position": [
+                650,
+                700
+            ],
+            "credentials": {
+                "googleApi": {
+                    "id": "YOUR_GOOGLE_CREDENTIAL_ID",
+                    "name": "Google Sheets Account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "chatId": "={{$env[\"ADMIN_GROUP_CHAT_ID\"]}}",
                 "text": "💰 *Новый платеж от клиента!*\n\nИмя: {{$node[\"Telegram Trigger\"].json[\"message\"][\"from\"][\"first_name\"]}} {{$node[\"Telegram Trigger\"].json[\"message\"][\"from\"][\"last_name\"]}}\nUsername: @{{$node[\"Telegram Trigger\"].json[\"message\"][\"from\"][\"username\"]}}",
                 "additionalFields": {
                     "parse_mode": "Markdown",
@@ -187,7 +216,7 @@
         },
         {
             "parameters": {
-                "chatId": "YOUR_GROUP_CHAT_ID",
+                "chatId": "={{$env[\"ADMIN_GROUP_CHAT_ID\"]}}",
                 "file": "={{$node[\"Telegram Trigger\"].json[\"message\"][\"photo\"].pop()[\"file_id\"]}}",
                 "additionalFields": {
                     "caption": "Скриншот оплаты"
@@ -270,6 +299,17 @@
             ]
         },
         "Check for Photo": {
+            "main": [
+                [
+                    {
+                        "node": "Log to Sheets",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Log to Sheets": {
             "main": [
                 [
                     {

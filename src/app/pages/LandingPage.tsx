@@ -61,20 +61,20 @@ export default function LandingPage() {
 
 
 
-    useEffect(() => {
-        const fetchGallery = async () => {
-            try {
-                const res = await fetch(`${APPS_SCRIPT_URL}?action=getGallery`);
-                const data = await res.json();
-                if (data && Array.isArray(data) && data.length > 0) {
-                    setGalleryImages(data);
-                }
-            } catch (e) {
-                console.error('Failed to fetch gallery', e);
-            }
-        };
-        fetchGallery();
-    }, []);
+    // useEffect(() => {
+    //     const fetchGallery = async () => {
+    //         try {
+    //             const res = await fetch(`${APPS_SCRIPT_URL}?action=getGallery`);
+    //             const data = await res.json();
+    //             if (data && Array.isArray(data) && data.length > 0) {
+    //                 setGalleryImages(data);
+    //             }
+    //         } catch (e) {
+    //             console.error('Failed to fetch gallery', e);
+    //         }
+    //     };
+    //     fetchGallery();
+    // }, []);
 
     const openLightbox = (url: string) => {
         setLightboxImage(url);
@@ -109,30 +109,22 @@ export default function LandingPage() {
                 <div className="max-w-[1240px] mx-auto px-5 md:px-20">
                     <div className="flex items-center justify-between h-20 md:h-24">
                         {/* Logo */}
-                        <a href="#" className="flex items-center gap-4 group">
-                            <div className="w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-gradient-to-tr from-[#1A9BAA] to-[#2DD4BF] flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-[0_0_15px_rgba(26,155,170,0.6)]">
-                                <Fish className="w-6 h-6 md:w-7 md:h-7 text-white" />
+                        <a href="#" className="flex items-center gap-3 group">
+                            <div className="w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gradient-to-tr from-[#1A9BAA] to-[#2DD4BF] flex items-center justify-center group-hover:scale-105 transition-transform duration-300 shadow-[0_0_15px_rgba(26,155,170,0.6)]">
+                                <Fish className="w-6 h-6 text-white" />
                             </div>
-                            <div className="flex flex-col">
-                                <span className="text-xl md:text-2xl text-white font-bold tracking-wider uppercase drop-shadow-md">Дом у воды</span>
-                                {/* Wave graphic instead of text */}
-                                <div className="flex space-x-1 mt-1.5 opacity-80">
-                                    <div className="w-6 h-1 bg-[#2DD4BF] rounded-full animate-pulse" />
-                                    <div className="w-4 h-1 bg-[#1A9BAA] rounded-full animate-pulse delay-75" />
-                                    <div className="w-2 h-1 bg-white rounded-full animate-pulse delay-150" />
-                                </div>
-                            </div>
+                            <span className="text-xl md:text-2xl text-white font-bold tracking-wider uppercase drop-shadow-md">Дом у воды</span>
                         </a>
 
                         {/* Desktop Menu */}
-                        <div className="hidden lg:flex items-center gap-8">
+                        <div className="hidden lg:flex items-center gap-6 xl:gap-8">
                             <a href="#about" className="text-white/80 hover:text-[#2DD4BF] hover:shadow-[0_0_10px_rgba(45,212,191,0.5)] transition-all text-sm font-bold tracking-widest uppercase px-2 py-1 rounded">О доме</a>
                             <a href="#gallery" className="text-white/80 hover:text-[#2DD4BF] hover:shadow-[0_0_10px_rgba(45,212,191,0.5)] transition-all text-sm font-bold tracking-widest uppercase px-2 py-1 rounded">Галерея</a>
                             <a href="#booking" className="text-white/80 hover:text-[#2DD4BF] hover:shadow-[0_0_10px_rgba(45,212,191,0.5)] transition-all text-sm font-bold tracking-widest uppercase px-2 py-1 rounded">Бронирование</a>
                             <a href="#directions" className="text-white/80 hover:text-[#2DD4BF] hover:shadow-[0_0_10px_rgba(45,212,191,0.5)] transition-all text-sm font-bold tracking-widest uppercase px-2 py-1 rounded">Как добраться</a>
                             <a href="#booking">
-                                <Button className="bg-gradient-to-r from-[#1A9BAA] to-[#158896] hover:from-[#158896] hover:to-[#0F6F7A] text-white px-8 h-12 rounded-xl shadow-[0_0_20px_rgba(26,155,170,0.4)] hover:shadow-[0_0_30px_rgba(26,155,170,0.6)] font-bold transition-all hover:-translate-y-1 active:translate-y-0 border border-white/10">
-                                    Мгновенное бронирование
+                                <Button className="bg-gradient-to-r from-[#1A9BAA] to-[#158896] hover:from-[#158896] hover:to-[#0F6F7A] text-white px-6 h-12 rounded-xl shadow-[0_0_20px_rgba(26,155,170,0.4)] hover:shadow-[0_0_30px_rgba(26,155,170,0.6)] font-bold transition-all hover:-translate-y-1 active:translate-y-0 border border-white/10 uppercase tracking-wide text-sm">
+                                    Забронировать
                                 </Button>
                             </a>
                         </div>
@@ -142,20 +134,20 @@ export default function LandingPage() {
                             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                             className="lg:hidden text-white p-2 hover:bg-white/10 rounded-lg transition-colors"
                         >
-                            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                            {mobileMenuOpen ? <X className="w-8 h-8" /> : <Menu className="w-8 h-8" />}
                         </button>
                     </div>
 
                     {/* Mobile Menu */}
                     {mobileMenuOpen && (
                         <div className="lg:hidden py-6 space-y-4 border-t border-white/10 animate-in slide-in-from-top-4 duration-200 bg-[#0B2A3D]">
-                            <a href="#about" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-[#2DD4BF] transition-colors py-3 text-center text-lg font-bold tracking-wider uppercase">О доме</a>
-                            <a href="#gallery" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-[#2DD4BF] transition-colors py-3 text-center text-lg font-bold tracking-wider uppercase">Галерея</a>
-                            <a href="#booking" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-[#2DD4BF] transition-colors py-3 text-center text-lg font-bold tracking-wider uppercase">Бронирование</a>
-                            <a href="#directions" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-[#2DD4BF] transition-colors py-3 text-center text-lg font-bold tracking-wider uppercase">Как добраться</a>
+                            <a href="#about" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-[#2DD4BF] transition-colors py-3 text-center text-xl font-bold tracking-wider uppercase">О доме</a>
+                            <a href="#gallery" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-[#2DD4BF] transition-colors py-3 text-center text-xl font-bold tracking-wider uppercase">Галерея</a>
+                            <a href="#booking" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-[#2DD4BF] transition-colors py-3 text-center text-xl font-bold tracking-wider uppercase">Бронирование</a>
+                            <a href="#directions" onClick={() => setMobileMenuOpen(false)} className="block text-white/90 hover:text-[#2DD4BF] transition-colors py-3 text-center text-xl font-bold tracking-wider uppercase">Как добраться</a>
                             <a href="#booking" onClick={() => setMobileMenuOpen(false)}>
-                                <Button className="w-full bg-[#1A9BAA] hover:bg-[#168A97] text-white h-14 rounded-xl mt-4 text-lg font-bold shadow-[0_0_20px_rgba(26,155,170,0.4)]">
-                                    Мгновенное бронирование
+                                <Button className="w-full bg-[#1A9BAA] hover:bg-[#168A97] text-white h-16 rounded-xl mt-4 text-xl font-bold shadow-[0_0_20px_rgba(26,155,170,0.4)] uppercase">
+                                    Забронировать
                                 </Button>
                             </a>
                         </div>
@@ -180,11 +172,12 @@ export default function LandingPage() {
                 {/* Content */}
                 <div className="relative z-10 max-w-[1240px] mx-auto px-5 md:px-20 py-20 md:py-32 w-full">
                     <div className="max-w-4xl animate-in slide-in-from-bottom-12 duration-1000 fade-in fill-mode-forwards">
-                        <h1 className="text-3xl md:text-5xl lg:text-7xl text-white mb-6 md:mb-8 leading-tight font-extrabold tracking-tight drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)]">
-                            220 км от МКАД по Новорижскому шоссе (М-9) <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2DD4BF] to-[#1A9BAA] drop-shadow-[0_0_10px_rgba(45,212,191,0.5)]">Тишина, природа и комфорт</span>
+                        <h1 className="text-4xl md:text-6xl lg:text-7xl text-white mb-6 md:mb-8 leading-tight font-extrabold tracking-tight drop-shadow-[0_4px_4px_rgba(0,0,0,0.5)]">
+                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2DD4BF] to-[#1A9BAA] drop-shadow-[0_0_10px_rgba(45,212,191,0.5)]">Мгновенное бронирование</span><br />
+                            дома у воды
                         </h1>
                         <p className="text-lg md:text-2xl text-white/95 mb-8 md:mb-12 leading-relaxed max-w-2xl font-medium drop-shadow-md">
-                            Премиум отдых для рыбаков и охотников. Дом у воды на Вазузском водохранилище.
+                            220 км от МКАД по Новорижскому шоссе (М-9). Тишина, природа и комфорт. Премиум отдых для рыбаков и охотников.
                         </p>
 
                         {/* Feature Chips - Monochrome Icons */}
@@ -202,8 +195,8 @@ export default function LandingPage() {
                         {/* CTA Buttons */}
                         <div className="flex flex-col sm:flex-row gap-5">
                             <a href="#booking">
-                                <Button className="w-full sm:w-auto bg-gradient-to-r from-[#1A9BAA] to-[#158896] hover:from-[#2DD4BF] hover:to-[#1A9BAA] text-white px-10 h-16 text-xl rounded-2xl shadow-[0_0_20px_rgba(26,155,170,0.4)] hover:shadow-[0_0_40px_rgba(26,155,170,0.6)] font-bold transition-all hover:-translate-y-1 hover:scale-105 active:scale-95 border border-white/10">
-                                    Мгновенное бронирование
+                                <Button className="w-full sm:w-auto bg-gradient-to-r from-[#1A9BAA] to-[#158896] hover:from-[#2DD4BF] hover:to-[#1A9BAA] text-white px-10 h-16 text-xl rounded-2xl shadow-[0_0_20px_rgba(26,155,170,0.4)] hover:shadow-[0_0_40px_rgba(26,155,170,0.6)] font-bold transition-all hover:-translate-y-1 hover:scale-105 active:scale-95 border border-white/10 uppercase tracking-wide">
+                                    Забронировать
                                 </Button>
                             </a>
                             <a href="#gallery">
@@ -390,74 +383,74 @@ export default function LandingPage() {
                 }}></div>
 
                 <div className="max-w-[1240px] mx-auto px-5 md:px-20 relative z-10">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-14 mb-16">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 md:gap-14 mb-16 items-start">
                         {/* Contacts */}
                         <div>
-                            <h4 className="text-xl font-bold mb-8 flex items-center gap-3">
+                            <h4 className="text-2xl font-bold mb-8 flex items-center gap-3">
                                 <div className="w-2 h-8 bg-[#1A9BAA] rounded-full"></div>
                                 Контакты
                             </h4>
-                            <div className="space-y-5 text-white/80">
+                            <div className="space-y-6 text-white/80">
                                 <div className="flex items-center gap-4 group cursor-pointer hover:text-white transition-colors">
-                                    <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[#1A9BAA] transition-colors">
-                                        <Phone className="w-5 h-5" />
+                                    <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[#1A9BAA] transition-colors">
+                                        <Phone className="w-6 h-6" />
                                     </div>
-                                    <span className="text-lg">+7 (996) 415-94-05</span>
+                                    <span className="text-xl font-medium">+7 (996) 415-94-05</span>
                                 </div>
                                 <div className="flex items-center gap-4 group cursor-pointer hover:text-white transition-colors">
-                                    <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[#1A9BAA] transition-colors">
-                                        <Mail className="w-5 h-5" />
+                                    <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[#1A9BAA] transition-colors">
+                                        <Mail className="w-6 h-6" />
                                     </div>
-                                    <span className="text-lg">booking@vazuza-fisherhouse.ru</span>
+                                    <span className="text-xl font-medium">booking@vazuza-fisherhouse.ru</span>
                                 </div>
                                 <div className="flex items-start gap-4 group cursor-pointer hover:text-white transition-colors">
-                                    <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[#1A9BAA] transition-colors shrink-0">
-                                        <MapPin className="w-5 h-5" />
+                                    <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-[#1A9BAA] transition-colors shrink-0">
+                                        <MapPin className="w-6 h-6" />
                                     </div>
-                                    <span className="leading-relaxed">Смоленская обл., д. Хлепень, ул. Набережная</span>
+                                    <span className="leading-relaxed text-xl">Смоленская обл., д. Хлепень, ул. Набережная</span>
                                 </div>
                             </div>
                         </div>
 
                         {/* Documents */}
                         <div>
-                            <h4 className="text-xl font-bold mb-8 flex items-center gap-3">
+                            <h4 className="text-2xl font-bold mb-8 flex items-center gap-3">
                                 <div className="w-2 h-8 bg-[#1A9BAA] rounded-full"></div>
                                 Документы
                             </h4>
-                            <div className="space-y-4 text-white/70">
-                                <Link to="/agreement" className="block hover:text-[#1A9BAA] hover:translate-x-1 transition-all">Публичная оферта</Link>
-                                <Link to="/privacy" className="block hover:text-[#1A9BAA] hover:translate-x-1 transition-all">Политика конфиденциальности</Link>
-                                <Link to="/agreement" className="block hover:text-[#1A9BAA] hover:translate-x-1 transition-all">Правила проживания</Link>
-                                <Link to="/agreement" className="block hover:text-[#1A9BAA] hover:translate-x-1 transition-all">Согласие на обработку ПД</Link>
+                            <div className="space-y-5 text-white/70">
+                                <Link to="/agreement" className="block text-xl hover:text-[#1A9BAA] hover:translate-x-1 transition-all">Публичная оферта</Link>
+                                <Link to="/privacy" className="block text-xl hover:text-[#1A9BAA] hover:translate-x-1 transition-all">Политика конфиденциальности</Link>
+                                <Link to="/agreement" className="block text-xl hover:text-[#1A9BAA] hover:translate-x-1 transition-all">Правила проживания</Link>
+                                <Link to="/agreement" className="block text-xl hover:text-[#1A9BAA] hover:translate-x-1 transition-all">Согласие на обработку ПД</Link>
                             </div>
                         </div>
 
                         {/* Info */}
                         <div>
-                            <h4 className="text-xl font-bold mb-8 flex items-center gap-3">
+                            <h4 className="text-2xl font-bold mb-8 flex items-center gap-3">
                                 <div className="w-2 h-8 bg-[#1A9BAA] rounded-full"></div>
                                 Реквизиты
                             </h4>
-                            <div className="space-y-4 text-white/70">
-                                <p>Емельянов Евгений Юрьевич</p>
-                                <p>ИНН: 504409892030</p>
-                                <p className="mt-4 text-white/50 text-sm">Сайт не является публичной офертой.</p>
+                            <div className="space-y-5 text-white/70">
+                                <p className="text-xl">Емельянов Евгений Юрьевич</p>
+                                <p className="text-xl">ИНН: 504409892030</p>
+                                <p className="mt-8 text-white/50 text-base">Сайт не является публичной офертой.</p>
                             </div>
                         </div>
 
                         {/* Social */}
                         <div>
-                            <h4 className="text-xl font-bold mb-8 flex items-center gap-3">
+                            <h4 className="text-2xl font-bold mb-8 flex items-center gap-3">
                                 <div className="w-2 h-8 bg-[#1A9BAA] rounded-full"></div>
                                 Мы в соцсетях
                             </h4>
                             <div className="flex gap-4">
-                                <a href="https://vk.com" target="_blank" className="w-14 h-14 rounded-2xl bg-white/5 hover:bg-[#0077FF] flex items-center justify-center transition-all hover:scale-110 hover:shadow-lg hover:shadow-[#0077FF]/30">
-                                    <span className="font-bold">VK</span>
+                                <a href="https://vk.com" target="_blank" className="w-16 h-16 rounded-2xl bg-white/5 hover:bg-[#0077FF] flex items-center justify-center transition-all hover:scale-110 hover:shadow-lg hover:shadow-[#0077FF]/30">
+                                    <span className="font-bold text-xl">VK</span>
                                 </a>
-                                <a href="https://t.me/fisherhouse" target="_blank" className="w-14 h-14 rounded-2xl bg-white/5 hover:bg-[#229ED9] flex items-center justify-center transition-all hover:scale-110 hover:shadow-lg hover:shadow-[#229ED9]/30">
-                                    <span className="font-bold">TG</span>
+                                <a href="https://t.me/fisherhouse" target="_blank" className="w-16 h-16 rounded-2xl bg-white/5 hover:bg-[#229ED9] flex items-center justify-center transition-all hover:scale-110 hover:shadow-lg hover:shadow-[#229ED9]/30">
+                                    <span className="font-bold text-xl">TG</span>
                                 </a>
                             </div>
                         </div>
