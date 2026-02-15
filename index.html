@@ -1,81 +1,138 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- Primary Meta Tags -->
-  <title>Дом у воды на Вазузском водохранилище | Рыбалка и Отдых</title>
-  <meta name="title" content="Дом у воды на Вазузском водохранилище | Рыбалка и Отдых">
+  <title>Дом у воды на Вазузском водохранилище — FisherHouse</title>
   <meta name="description"
-    content="Аренда дома на берегу Вазузского водохранилища. Рыбалка, баня, причал. 220 км от Москвы. Комфортный отдых для семьи и компании. Бронируйте онлайн!">
-  <meta name="keywords"
-    content="рыбалка вазуза, дом у воды, аренда дома рыбалка, вазузское водохранилище, отдых подмосковье, рыбалка с проживанием, снять дом на выходные">
-  <meta name="author" content="FisherHouse">
-  <link rel="canonical" href="https://vazuza-fisherhouse.ru/">
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-  <link rel="manifest" href="/manifest.json">
+    content="Дом у воды на Вазузском водохранилище: комфорт до 8 гостей, баня-бочка, прямой выход к воде, рыбалка круглый год. Бронирование дат онлайн." />
+  <meta name="robots" content="index,follow" />
+  <link rel="canonical" href="https://vazuza-fisherhouse.ru/" />
 
-  <!-- Open Graph / Facebook -->
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://vazuza-fisherhouse.ru/">
-  <meta property="og:title" content="Дом у воды на Вазузском водохранилище | Рыбалка и Отдых">
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Дом у воды на Вазузском водохранилище — FisherHouse" />
   <meta property="og:description"
-    content="Идеальный отдых для рыбаков и семей. Баня, причал, тишина. 130 м² комфорта прямо у воды.">
-  <meta property="og:image" content="https://vazuza-fisherhouse.ru/photos/1.jpg">
+    content="Комфортный дом у воды: до 8 гостей, баня-бочка, прямой выход к воде. Выберите даты и оставьте заявку на бронирование." />
+  <meta property="og:url" content="https://vazuza-fisherhouse.ru/" />
+  <meta property="og:image" content="https://vazuza-fisherhouse.ru/photos/1.jpg" />
 
-  <!-- Twitter -->
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://vazuza-fisherhouse.ru/">
-  <meta property="twitter:title" content="Дом у воды на Вазузском водохранилище | Рыбалка и Отдых">
-  <meta property="twitter:description"
-    content="Идеальный отдых для рыбаков и семей. Баня, причал, тишина. 130 м² комфорта прямо у воды.">
-  <meta property="twitter:image" content="https://vazuza-fisherhouse.ru/photos/1.jpg">
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Дом у воды — FisherHouse" />
+  <meta name="twitter:description" content="Дом у воды на Вазузском водохранилище. Бронирование дат онлайн." />
+  <meta name="twitter:image" content="https://vazuza-fisherhouse.ru/photos/1.jpg" />
 
-  <!-- Schema.org Structured Data -->
+  <link rel="icon" href="/favicon.ico" />
+
+  <!-- Structured data (JSON-LD) -->
   <script type="application/ld+json">
       {
         "@context": "https://schema.org",
         "@type": "LodgingBusiness",
-        "name": "FisherHouse",
-        "image": "https://vazuza-fisherhouse.ru/photos/1.jpg",
-        "@id": "https://vazuza-fisherhouse.ru",
-        "url": "https://vazuza-fisherhouse.ru",
-        "telephone": "+79964159405",
+        "name": "FisherHouse — Дом у воды",
+        "url": "https://vazuza-fisherhouse.ru/",
+        "description": "Дом у воды на Вазузском водохранилище: до 8 гостей, баня-бочка, прямой выход к воде, рыбалка круглый год.",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "ул. Набережная",
-          "addressLocality": "д. Хлепень",
+          "addressCountry": "RU",
           "addressRegion": "Смоленская область",
-          "addressCountry": "RU"
+          "addressLocality": "деревня Хлепень",
+          "streetAddress": "ул. Набережная"
         },
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": 55.96231,
-          "longitude": 34.46818
-        },
-        "priceRange": "₽₽",
-        "description": "Аренда дома на берегу Вазузского водохранилища для рыбалки и отдыха.",
-        "amenityFeature": [
-          {
-            "@type": "LocationFeatureSpecification",
-            "name": "Баня",
-            "value": "True"
-          },
-          {
-            "@type": "LocationFeatureSpecification",
-            "name": "Причал",
-            "value": "True"
-          },
-          {
-            "@type": "LocationFeatureSpecification",
-            "name": "Рыбалка",
-            "value": "True"
-          }
-        ]
+        "telephone": "+7-996-415-94-05",
+        "email": "booking@vazuza-fisherhouse.ru"
       }
-      </script>
+    </script>
+
+  <!-- Yandex.Metrika: load only after cookie consent + SPA navigation tracking -->
+  <script>
+    (function () {
+      var METRIKA_ID = 106839191;
+      window.__YM_COUNTER_ID__ = METRIKA_ID;
+      window.__ymLoaded = false;
+
+      function hookSpa(ym, id) {
+        function hit() {
+          try {
+            ym(id, "hit", location.href);
+          } catch (e) { }
+        }
+
+        hit();
+
+        var _pushState = history.pushState;
+        history.pushState = function () {
+          _pushState.apply(history, arguments);
+          hit();
+        };
+
+        var _replaceState = history.replaceState;
+        history.replaceState = function () {
+          _replaceState.apply(history, arguments);
+          hit();
+        };
+
+        window.addEventListener("popstate", hit);
+      }
+
+      function loadMetrika() {
+        if (!METRIKA_ID || METRIKA_ID === 0) return;
+        if (window.__ymLoaded) return;
+        window.__ymLoaded = true;
+
+        (function (m, e, t, r, i, k, a) {
+          m[i] =
+            m[i] ||
+            function () {
+              (m[i].a = m[i].a || []).push(arguments);
+            };
+          m[i].l = 1 * new Date();
+          (k = e.createElement(t)),
+            (a = e.getElementsByTagName(t)[0]),
+            (k.async = 1),
+            (k.src = r),
+            a.parentNode.insertBefore(k, a);
+        })(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+        window.ym(METRIKA_ID, "init", {
+          clickmap: true,
+          trackLinks: true,
+          accurateTrackBounce: true,
+          webvisor: true
+        });
+
+        hookSpa(window.ym, METRIKA_ID);
+      }
+
+      // Try load immediately if consent already exists
+      try {
+        if (localStorage.getItem("cookieConsent") === "true") {
+          loadMetrika();
+        }
+      } catch (e) { }
+
+      // Poll for consent after user accepts (same tab)
+      var tries = 0;
+      var timer = setInterval(function () {
+        tries++;
+        try {
+          if (localStorage.getItem("cookieConsent") === "true") {
+            clearInterval(timer);
+            loadMetrika();
+          }
+        } catch (e) { }
+        if (tries > 120) clearInterval(timer); // ~60 seconds
+      }, 500);
+
+      window.loadMetrika = loadMetrika;
+    })();
+  </script>
+  <noscript>
+    <div>
+      <img src="https://mc.yandex.ru/watch/106839191" style="position: absolute; left: -9999px" alt="" />
+    </div>
+  </noscript>
 </head>
 
 <body>
